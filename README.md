@@ -3,6 +3,9 @@
 Configuration for fuzz testing the Rust compiler using [libfuzzer-sys](https://github.com/rust-fuzz/libfuzzer-sys),
 taking inspiration from [cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz) and [fuzz-targets](https://github.com/rust-fuzz/targets).
 
+Builds a [lightly modified rustc](https://github.com/dwrensha/rust/tree/fuzz) with fuzzing instrumentation and runs
+a coverage-guided fuzzer on it.
+
 ## Running
 
 ```sh

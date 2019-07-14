@@ -8,11 +8,11 @@ publish = false
 cargo-fuzz = true
 
 [dependencies.rustc_driver]
-git = "https://github.com/dwrensha/rust.git"
-branch = "fuzz"
+#git = "https://github.com/dwrensha/rust.git"
+#branch = "fuzz"
 # Fetching this dependency can take a while, largely due to the many git submodules
 # in the Rust repo. You may find it more convenient to use a path dependency here:
-#path = "../rust/src/librustc_driver"
+path = "../rust/src/librustc_driver"
 
 [dependencies.libfuzzer-sys]
 git = "https://github.com/rust-fuzz/libfuzzer-sys.git"
