@@ -17,9 +17,6 @@ export RUSTFLAGS="$RUSTFLAGS -C opt-level=0"
 # - and debug assertions
 export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
 
-# Change directory to the crate we want to fuzz
-cd "$1"
-
 # Create seed directory if it does not exist. Add example files here.
 mkdir -p seeds
 
