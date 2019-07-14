@@ -8,11 +8,14 @@ a coverage-guided fuzzer on it.
 
 ## Running
 
-Optionally add some example inputs in a `./seeds/` directory, then do:
 
 ```sh
 ./run-fuzzer.sh
 ```
+
+You may add some example inputs in the `./seeds/` directory.
+
+New interesting test cases are automatically written to the `./corpus/` directory as they are found.
 
 ## Bugs found
 
