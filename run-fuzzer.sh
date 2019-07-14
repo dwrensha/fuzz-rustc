@@ -5,16 +5,14 @@ set -x
 
 rustup override set nightly
 
-# Specify RUSTFLAGS:
-export RUSTFLAGS=""
-
-# - so the target crate is compiled with sanitization
+# - enable coverage instrumentation
 export RUSTFLAGS="$RUSTFLAGS -C passes=sancov -C llvm-args=-sanitizer-coverage-level=3"
 
-# - optimizations
+# - optimizations. Note that even if we build with --release, we must set opt-level=0
+# to work around https://github.com/rust-fuzz/cargo-fuzz/issues/161
 export RUSTFLAGS="$RUSTFLAGS -C opt-level=0"
 
-# - and debug assertions
+# - enable debug assertions
 export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
 
 # Create seed directory if it does not exist. Add example files here.

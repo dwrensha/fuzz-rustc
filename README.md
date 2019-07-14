@@ -8,6 +8,8 @@ a coverage-guided fuzzer on it.
 
 ## Running
 
+Optionally add some example inputs in a `./seeds/` directory, then do:
+
 ```sh
 ./run-fuzzer.sh
 ```
@@ -15,9 +17,7 @@ a coverage-guided fuzzer on it.
 ## Bugs found
 
 [#62524](https://github.com/rust-lang/rust/issues/62524)
-
 [#62646](https://github.com/rust-lang/rust/issues/62546)
-
 [#62554](https://github.com/rust-lang/rust/issues/62554)
 
 ## TODO
