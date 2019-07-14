@@ -3,26 +3,16 @@
 extern crate rustc_driver;
 
 fn try_main(data: &[u8]) -> Result<(), ::std::io::Error> {
-    let basename = format!("fuzz_at_{:?}", ::std::time::SystemTime::now()
-                           .duration_since(::std::time::SystemTime::UNIX_EPOCH).unwrap().as_millis());
-    let sourcefile = format!("/tmp/{}.rs", &basename);
-    let outputfile = format!("/tmp/{}", basename);
-    {
-        let mut file = ::std::fs::File::create(&sourcefile)?;
-        ::std::io::Write::write_all(&mut file, data)?;
-    }
-    ::rustc_driver::main_fuzz(&sourcefile, &outputfile);
+    let mut file = ::tempfile::Builder::new().prefix("fuzz").tempfile()?;
+    ::std::io::Write::write_all(&mut file, data)?;
+    ::std::io::Write::flush(&mut file)?;
+    ::rustc_driver::main_fuzz(&file.path().to_str().expect("path string"), "/tmp/dummy_output_file");
+    file.close()?; // removes the file
     Ok(())
 }
 
 
 fuzz_target!(|data: &[u8]| {
-    match ::std::str::from_utf8(data) {
-        Ok(s) => {
-            if s.is_ascii() {
-                let _ = try_main(data);
-            }
-        }
-        _ => ()
-    }
+    let _ = try_main(data);
+
 });
