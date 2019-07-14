@@ -14,7 +14,7 @@ export RUSTFLAGS="$RUSTFLAGS -C passes=sancov -C llvm-args=-sanitizer-coverage-l
 # - optimizations
 export RUSTFLAGS="$RUSTFLAGS -C opt-level=0"
 
-# - and all debug infos
+# - and debug assertions
 export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
 
 # Change directory to the crate we want to fuzz
