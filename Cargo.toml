@@ -1,0 +1,22 @@
+
+[package]
+name = "fuzz_rustc"
+version = "0.0.1"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies.rustc_driver]
+git = "https://github.com/dwrensha/rust.git"
+branch = "fuzz"
+# Fetching this dependency can take a while, largely due to the many git submodules
+# in the Rust repo. You may find it more convenient to use a path dependency here:
+#path = "../rust/src/librustc_driver"
+
+[dependencies.libfuzzer-sys]
+git = "https://github.com/rust-fuzz/libfuzzer-sys.git"
+
+[[bin]]
+name = "fuzz_target"
+path = "fuzz_target.rs"
