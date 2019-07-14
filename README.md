@@ -1,10 +1,13 @@
 # Fuzz Rustc
 
-Configuration for fuzz testing the Rust compiler using [libfuzzer-sys](https://github.com/rust-fuzz/libfuzzer-sys),
+This repo contains configuration for fuzz-testing the Rust compiler using [libfuzzer-sys](https://github.com/rust-fuzz/libfuzzer-sys),
 taking inspiration from [cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz) and [fuzz-targets](https://github.com/rust-fuzz/targets).
 
-Builds a [lightly modified rustc](https://github.com/dwrensha/rust/tree/fuzz) with fuzzing instrumentation and runs
-a coverage-guided fuzzer on it.
+Because [rustc](https://github.com/rust-lang/rust) is a bootstrapping compiler, its build process has several stages
+and involves juggling many flags, attributes, and environment variables. These complications create some difficulties for
+cleanly setting up fuzz testing. We work around those difficulties with some
+[light modifications to rustc](https://github.com/dwrensha/rust/tree/fuzz) and some additional configuration.
+
 
 ## Running
 
