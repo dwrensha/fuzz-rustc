@@ -27,6 +27,8 @@ New interesting test cases are automatically written to the `./corpus/` director
 [#62554](https://github.com/rust-lang/rust/issues/62554)
 [#62863](https://github.com/rust-lang/rust/issues/62863)
 [#62881](https://github.com/rust-lang/rust/issues/62881)
+[#62894](https://github.com/rust-lang/rust/issues/62894)
+[#62895](https://github.com/rust-lang/rust/issues/62895)
 
 ## TODO
 
