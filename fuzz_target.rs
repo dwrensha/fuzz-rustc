@@ -14,5 +14,4 @@ fn try_main(data: &[u8]) -> Result<(), ::std::io::Error> {
 
 fuzz_target!(|data: &[u8]| {
     let _ = try_main(data);
-
 });
