@@ -8,7 +8,10 @@ rustup override set nightly
 # - enable coverage instrumentation
 export RUSTFLAGS="$RUSTFLAGS -C passes=sancov -C llvm-args=-sanitizer-coverage-level=3"
 
-# work around https://github.com/rust-fuzz/cargo-fuzz/issues/161
+# - enable compilation of rustc_private crates
+export RUSTFLAGS="$RUSTFLAGS -Z force-unstable-if-unmarked"
+
+# - work around https://github.com/rust-fuzz/cargo-fuzz/issues/161
 export RUSTFLAGS="$RUSTFLAGS -C codegen-units=1"
 
 # - enable debug assertions
