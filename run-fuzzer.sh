@@ -45,9 +45,12 @@ export CFG_COMPILER_HOST_TRIPLE=$TARGET
 # Any writable location will do for this one.
 export RUSTC_ERROR_METADATA_DST=/tmp/rustc_error_metadata
 
+export RUSTC_INSTALL_BINDIR=/tmp/rustc_install_bindir
+
 # Custom environment variable.
 export FUZZ_RUSTC_LIBRARY_DIR=$TOOLCHAIN_ROOT/lib/rustlib/$TARGET/lib
 
 # The --target flag is important because it prevents build.rs scripts from being built with
 # the above-specified RUSTFLAGS.
 cargo run --release --verbose --target $TARGET --bin "fuzz_target" -- -artifact_prefix=artifacts/ ${@:1} `pwd`/corpus `pwd`/seeds
+

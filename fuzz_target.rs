@@ -13,5 +13,8 @@ fn try_main(data: &[u8]) -> Result<(), ::std::io::Error> {
 
 
 fuzz_target!(|data: &[u8]| {
+    if data.contains(&0x0c) || data.contains(&0x0d) || data.contains(&0x0b) {
+        return;
+    }
     let _ = try_main(data);
 });
