@@ -38,9 +38,9 @@ fi
 
 TOOLCHAIN_ROOT=${RUSTUP_BASE:-$HOME/.rustup}/toolchains/nightly-$TARGET
 
-# Set some evironment variables that are needed when building the rustc source code.
-export CFG_CODEGEN_BACKENDS_DIR=$TOOLCHAIN_ROOT/lib/rustlib/$TARGET/codegen-backends
+# Set some environment variables that are needed when building the rustc source code.
 export CFG_COMPILER_HOST_TRIPLE=$TARGET
+export REAL_LIBRARY_PATH_VAR=foobar
 
 # Any writable location will do for this one.
 export RUSTC_ERROR_METADATA_DST=/tmp/rustc_error_metadata

@@ -11,6 +11,7 @@ cargo-fuzz = true
 tempfile = "3.1"
 
 [dependencies.rustc_driver]
+features = ["llvm"]
 git = "https://github.com/dwrensha/rust.git"
 branch = "fuzz"
 # Fetching this dependency can take a while, largely due to the many git submodules
