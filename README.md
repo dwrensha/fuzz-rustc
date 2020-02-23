@@ -23,7 +23,7 @@ New interesting test cases are automatically written to the `./corpus/` director
 ## Bugs found
 
 [#62524](https://github.com/rust-lang/rust/issues/62524)
-[#62646](https://github.com/rust-lang/rust/issues/62546)
+[#62546](https://github.com/rust-lang/rust/issues/62546)
 [#62554](https://github.com/rust-lang/rust/issues/62554)
 [#62863](https://github.com/rust-lang/rust/issues/62863)
 [#62881](https://github.com/rust-lang/rust/issues/62881)
@@ -39,6 +39,9 @@ New interesting test cases are automatically written to the `./corpus/` director
 [#68890](https://github.com/rust-lang/rust/issues/68890)
 [#69130](https://github.com/rust-lang/rust/issues/69130)
 [#69310](https://github.com/rust-lang/rust/issues/69310)
+[#69378](https://github.com/rust-lang/rust/issues/69378)
+[#69396](https://github.com/rust-lang/rust/issues/69396)
+[#69401](https://github.com/rust-lang/rust/issues/69401)
 
 
 ## TODO
