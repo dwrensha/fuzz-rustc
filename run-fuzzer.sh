@@ -6,7 +6,12 @@ set -x
 rustup override set nightly
 
 # - enable coverage instrumentation
-export RUSTFLAGS="$RUSTFLAGS -C passes=sancov -C llvm-args=-sanitizer-coverage-level=3"
+export RUSTFLAGS="$RUSTFLAGS -C passes=sancov -C llvm-args=-sanitizer-coverage-level=4"
+export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-trace-compares"
+export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-inline-8bit-counters"
+export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-trace-geps"
+export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-prune-blocks=0"
+export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-pc-table"
 
 # - enable compilation of rustc_private crates
 export RUSTFLAGS="$RUSTFLAGS -Z force-unstable-if-unmarked"
@@ -16,6 +21,8 @@ export RUSTFLAGS="$RUSTFLAGS -C codegen-units=1"
 
 # - enable debug assertions
 export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
+
+#export RUSTFLAGS="$RUSTFLAGS -Z sanitizer=address"
 
 # Create seed directory if it does not exist. Add example files here.
 mkdir -p seeds
