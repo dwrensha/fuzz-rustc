@@ -49,6 +49,9 @@ TOOLCHAIN_ROOT=${RUSTUP_BASE:-$HOME/.rustup}/toolchains/nightly-$TARGET
 export CFG_COMPILER_HOST_TRIPLE=$TARGET
 export REAL_LIBRARY_PATH_VAR=foobar
 
+# Prevent librustc_llvm's 'cargo:rerun-if-changed' from always requiring a rebuild.
+export LLVM_CONFIG=`which llvm-config`
+
 # Any writable location will do for this one.
 export RUSTC_ERROR_METADATA_DST=/tmp/rustc_error_metadata
 
