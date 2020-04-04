@@ -43,7 +43,13 @@ else
     exit 1
 fi
 
+# Usually we can use the precompiled libstd from rustup.
 TOOLCHAIN_ROOT=${RUSTUP_BASE:-$HOME/.rustup}/toolchains/nightly-$TARGET
+
+# If a metadata change has landed on master and is not yet in a nightly release,
+# we may need to compile our own libstd. `./x.py build --stage 1` should suffice.
+# If fuzzing immediately fails on an empty input, this is a good thing to try.
+#TOOLCHAIN_ROOT=$HOME/src/rust/build/x86_64-unknown-linux-gnu/stage1/
 
 # Set some environment variables that are needed when building the rustc source code.
 export CFG_COMPILER_HOST_TRIPLE=$TARGET
