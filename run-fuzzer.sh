@@ -60,6 +60,9 @@ TOOLCHAIN_ROOT=${RUSTUP_BASE:-$HOME/.rustup}/toolchains/nightly-$TARGET
 # If fuzzing immediately fails on an empty input, this is a good thing to try.
 #TOOLCHAIN_ROOT=$HOME/src/rust/build/x86_64-unknown-linux-gnu/stage1/
 
+# Custom environment variable indicating where to look for the precompiled libstd.
+export FUZZ_RUSTC_LIBRARY_DIR=$TOOLCHAIN_ROOT/lib/rustlib/$TARGET/lib
+
 # Set some environment variables that are needed when building the rustc source code.
 export CFG_COMPILER_HOST_TRIPLE=$TARGET
 export REAL_LIBRARY_PATH_VAR=foobar
@@ -71,9 +74,6 @@ export LLVM_CONFIG=`which llvm-config`
 export RUSTC_ERROR_METADATA_DST=/tmp/rustc_error_metadata
 
 export RUSTC_INSTALL_BINDIR=/tmp/rustc_install_bindir
-
-# Custom environment variable.
-export FUZZ_RUSTC_LIBRARY_DIR=$TOOLCHAIN_ROOT/lib/rustlib/$TARGET/lib
 
 # The --target flag is important because it prevents build.rs scripts from being built with
 # the above-specified RUSTFLAGS.
