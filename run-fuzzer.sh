@@ -3,6 +3,15 @@
 set -e
 set -x
 
+if [ ! -d rust ]; then
+    git clone https://github.com/dwrensha/rust.git
+fi
+
+cd rust
+git fetch
+git checkout fuzz
+cd ..
+
 rustup override set nightly
 
 # - enable coverage instrumentation
@@ -20,7 +29,7 @@ export RUSTFLAGS="$RUSTFLAGS -Z force-unstable-if-unmarked"
 export RUSTFLAGS="$RUSTFLAGS -C codegen-units=1"
 
 # - enable debug assertions
-export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
+#export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
 
 #export RUSTFLAGS="$RUSTFLAGS -Z sanitizer=address"
 

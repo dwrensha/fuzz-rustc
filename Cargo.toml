@@ -13,11 +13,13 @@ libfuzzer-sys = "0.3.2"
 
 [dependencies.rustc_driver]
 features = ["llvm"]
-git = "https://github.com/dwrensha/rust.git"
-branch = "fuzz"
-# Fetching this dependency can take a while, largely due to the many git submodules
-# in the Rust repo. You may find it more convenient to use a path dependency here:
-#path = "../rust/src/librustc_driver"
+path = "./rust/src/librustc_driver"
+
+[dependencies.rustc_span]
+path = "./rust/src/librustc_span"
+
+[dependencies.rustc_interface]
+path = "./rust/src/librustc_interface"
 
 [[bin]]
 name = "fuzz_target"
