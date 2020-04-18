@@ -47,12 +47,19 @@ else
     exit 1
 fi
 
+# This variable tells the new rustc (i.e. the one we're compiling) what version it
+# should consider itself to have. This is used when loading precompiled libstd and other
+# crates. If the rustc version recorded in those crates' metadata does not match this,
+# then the compiler quits early.
+export CFG_VERSION=`rustc --version | cut -f2- -d ' '`
+
 # Usually we can use the precompiled libstd from rustup.
 TOOLCHAIN_ROOT=${RUSTUP_BASE:-$HOME/.rustup}/toolchains/nightly-$TARGET
 
 # If a metadata change has landed on master and is not yet in a nightly release,
 # we may need to compile our own libstd. `./x.py build --stage 1` should suffice.
 # If fuzzing immediately fails on an empty input, this is a good thing to try.
+# (Note that you will also need to change CFG_VERSION, above.)
 #TOOLCHAIN_ROOT=$HOME/src/rust/build/x86_64-unknown-linux-gnu/stage1/
 
 # Custom environment variable indicating where to look for the precompiled libstd.

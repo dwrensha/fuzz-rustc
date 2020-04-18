@@ -43,7 +43,6 @@ impl rustc_span::source_map::FileLoader for FuzzFileLoader {
 
 pub fn main_fuzz(input: String, output_filename: &str) {
     let file_loader = Box::new(FuzzFileLoader::new(input));
-    //init_rustc_env_logger();
     let mut callbacks = FuzzCallbacks;
     let _result = rustc_driver::catch_fatal_errors(|| {
         rustc_driver::run_compiler(&["rustc".to_string(), INPUT_PATH.to_string(),
