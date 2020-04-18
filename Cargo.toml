@@ -4,11 +4,7 @@ version = "0.0.1"
 publish = false
 edition = "2018"
 
-[package.metadata]
-cargo-fuzz = true
-
 [dependencies]
-tempfile = "3.1"
 libfuzzer-sys = "0.3.2"
 
 [dependencies.rustc_driver]
