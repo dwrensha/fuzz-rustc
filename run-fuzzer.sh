@@ -4,13 +4,8 @@ set -e
 set -x
 
 if [ ! -d rust ]; then
-    git clone https://github.com/dwrensha/rust.git
+    git clone https://github.com/dwrensha/rust.git --branch fuzz
 fi
-
-cd rust
-git fetch
-git checkout fuzz
-cd ..
 
 rustup override set nightly
 

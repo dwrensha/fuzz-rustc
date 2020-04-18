@@ -11,8 +11,6 @@ impl rustc_driver::Callbacks for FuzzCallbacks {
     }
 }
 
-
-
 struct FuzzFileLoader {
     input: String,
 }
@@ -25,19 +23,30 @@ impl FuzzFileLoader {
     }
 }
 
-impl rustc_span::source_map::FileLoader for FuzzFileLoader {
-    fn file_exists(&self, _path: &std::path::Path) -> bool { true }
-    fn abs_path(&self, _path: &std::path::Path) -> Option<std::path::PathBuf> { None }
-    fn read_file(&self, _path: &std::path::Path) -> std::io::Result<String> { Ok(self.input.clone()) }
-}
+const INPUT_PATH: &str = "fuzz_input.rs";
 
+impl rustc_span::source_map::FileLoader for FuzzFileLoader {
+    fn file_exists(&self, path: &std::path::Path) -> bool {
+        std::path::Path::new(INPUT_PATH) == path
+    }
+    fn abs_path(&self, path: &std::path::Path) -> Option<std::path::PathBuf> {
+        None
+    }
+    fn read_file(&self, path: &std::path::Path) -> std::io::Result<String> {
+        if self.file_exists(path) {
+            Ok(self.input.clone())
+        } else {
+            Err(std::io::Error::new(std::io::ErrorKind::NotFound, "tried to open nonexistent file".to_string()))
+        }
+    }
+}
 
 pub fn main_fuzz(input: String, output_filename: &str) {
     let file_loader = Box::new(FuzzFileLoader::new(input));
     //init_rustc_env_logger();
     let mut callbacks = FuzzCallbacks;
     let _result = rustc_driver::catch_fatal_errors(|| {
-        rustc_driver::run_compiler(&["rustc".to_string(), "fuzz_input.rs".to_string(),
+        rustc_driver::run_compiler(&["rustc".to_string(), INPUT_PATH.to_string(),
                        "-o".to_string(),
                        output_filename.to_string(),
                        "--edition".to_string(),
@@ -55,9 +64,9 @@ fuzz_target!(|data: &[u8]| {
         return;
     }
     if let Ok(t) = String::from_utf8(data.into()) {
-        if let Some(_) = t.find("derive") {
-            return;
-        }
+        //if let Some(_) = t.find("derive") {
+        //    return;
+        //}
         main_fuzz(t, "/tmp/dummy_output_file");
     }
 });
