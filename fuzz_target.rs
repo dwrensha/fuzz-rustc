@@ -29,9 +29,7 @@ impl rustc_span::source_map::FileLoader for FuzzFileLoader {
     fn file_exists(&self, path: &std::path::Path) -> bool {
         std::path::Path::new(INPUT_PATH) == path
     }
-    fn abs_path(&self, path: &std::path::Path) -> Option<std::path::PathBuf> {
-        None
-    }
+
     fn read_file(&self, path: &std::path::Path) -> std::io::Result<String> {
         if self.file_exists(path) {
             Ok(self.input.clone())
@@ -63,9 +61,9 @@ fuzz_target!(|data: &[u8]| {
         return;
     }
     if let Ok(t) = String::from_utf8(data.into()) {
-        //if let Some(_) = t.find("derive") {
-        //    return;
-        //}
+        if let Some(_) = t.find("derive") {
+            return;
+        }
         main_fuzz(t, "/tmp/dummy_output_file");
     }
 });
