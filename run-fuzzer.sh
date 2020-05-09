@@ -67,6 +67,8 @@ export FUZZ_RUSTC_LIBRARY_DIR=$TOOLCHAIN_ROOT/lib/rustlib/$TARGET/lib
 
 # Set some environment variables that are needed when building the rustc source code.
 export CFG_COMPILER_HOST_TRIPLE=$TARGET
+export CFG_RELEASE_CHANNEL=nightly
+export CFG_RELEASE=unknown
 export REAL_LIBRARY_PATH_VAR=foobar
 
 # Prevent librustc_llvm's 'cargo:rerun-if-changed' from always requiring a rebuild.
