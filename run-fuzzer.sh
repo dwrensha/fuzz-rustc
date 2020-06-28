@@ -13,8 +13,6 @@ rustup override set nightly
 export RUSTFLAGS="$RUSTFLAGS -C passes=sancov -C llvm-args=-sanitizer-coverage-level=4"
 export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-trace-compares"
 export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-inline-8bit-counters"
-export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-trace-geps"
-export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-prune-blocks=0"
 export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-pc-table"
 
 # - enable compilation of rustc_private crates
