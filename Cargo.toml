@@ -9,13 +9,13 @@ libfuzzer-sys = "0.3.2"
 
 [dependencies.rustc_driver]
 features = ["llvm"]
-path = "./rust/src/librustc_driver"
+path = "./rust/compiler/rustc_driver"
 
 [dependencies.rustc_span]
-path = "./rust/src/librustc_span"
+path = "./rust/compiler/rustc_span"
 
 [dependencies.rustc_interface]
-path = "./rust/src/librustc_interface"
+path = "./rust/compiler/rustc_interface"
 
 [[bin]]
 name = "fuzz_target"
