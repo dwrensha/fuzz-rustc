@@ -43,16 +43,17 @@ pub fn main_fuzz(input: String, output_filename: &str) {
     let file_loader = Box::new(FuzzFileLoader::new(input));
     let mut callbacks = FuzzCallbacks;
     let _result = rustc_driver::catch_fatal_errors(|| {
-        rustc_driver::run_compiler(&["rustc".to_string(), INPUT_PATH.to_string(),
-                       "-o".to_string(),
-                       output_filename.to_string(),
-                       "--edition".to_string(),
-                       "2018".to_string(),
-                       "-L".to_string(),
-                       env!("FUZZ_RUSTC_LIBRARY_DIR").to_string()],
-                     &mut callbacks,
-                     Some(file_loader),
-                     None)
+        let args = &["rustc".to_string(),
+              INPUT_PATH.to_string(),
+              "-o".to_string(),
+              output_filename.to_string(),
+              "--edition".to_string(),
+              "2018".to_string(),
+              "-L".to_string(),
+              env!("FUZZ_RUSTC_LIBRARY_DIR").to_string()];
+        let mut run_compiler = rustc_driver::RunCompiler::new(args, &mut callbacks);
+        run_compiler.set_file_loader(Some(file_loader));
+        run_compiler.run()
     }).and_then(|result| result);
 }
 
