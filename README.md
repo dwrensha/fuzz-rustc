@@ -20,6 +20,15 @@ You may add some example inputs in the `./seeds/` directory.
 
 New interesting test cases are automatically written to the `./corpus/` directory as they are found.
 
+The run-fuzzer.sh script passes trailing arguments on to the underlying libfuzzer binary,
+so you can pass any of these options: https://llvm.org/docs/LibFuzzer.html#options .
+
+For example, this invocation will run 4 jobs in parallel and will only try ascii inputs:
+
+```sh
+./run_fuzzer.sh -jobs=4 -only_ascii
+```
+
 ## Bugs found
 
 [#62524](https://github.com/rust-lang/rust/issues/62524)
