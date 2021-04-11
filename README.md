@@ -26,7 +26,7 @@ so you can pass any of these options: https://llvm.org/docs/LibFuzzer.html#optio
 For example, this invocation will run 4 jobs in parallel and will only try ascii inputs:
 
 ```sh
-./run_fuzzer.sh -jobs=4 -only_ascii
+./run_fuzzer.sh -jobs=4 -only_ascii=1
 ```
 
 ## Bugs found
