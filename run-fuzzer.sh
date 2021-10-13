@@ -10,7 +10,7 @@ fi
 rustup override set nightly
 
 # - enable coverage instrumentation
-export RUSTFLAGS="$RUSTFLAGS -C passes=sancov -C llvm-args=-sanitizer-coverage-level=4"
+export RUSTFLAGS="$RUSTFLAGS -C passes=sancov-module -C llvm-args=-sanitizer-coverage-level=4"
 export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-trace-compares"
 export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-inline-8bit-counters"
 export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-pc-table"
