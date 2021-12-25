@@ -80,14 +80,14 @@ impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
 }
 
 
-pub fn main_fuzz(input: String, output_filename: &str) {
+pub fn main_fuzz(input: String) {
     let file_loader = Box::new(FuzzFileLoader::new(input));
     let mut callbacks = FuzzCallbacks;
     let _result = rustc_driver::catch_fatal_errors(|| {
         let args = &["rustc".to_string(),
               INPUT_PATH.to_string(),
               "-o".to_string(),
-              output_filename.to_string(),
+              "dummy_output_file".to_string(),
               "--edition".to_string(),
               "2018".to_string(),
               "-L".to_string(),
@@ -108,6 +108,6 @@ fuzz_target!(|data: &[u8]| {
         if let Some(_) = t.find("derive") {
             return;
         }
-        main_fuzz(t, "/tmp/dummy_output_file");
+        main_fuzz(t);
     }
 });
