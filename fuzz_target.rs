@@ -1,17 +1,22 @@
 #![no_main]
 #[macro_use] extern crate libfuzzer_sys;
 
+/// rustc_driver::Callbacks object that stops before codegen.
 pub struct FuzzCallbacks;
 
 impl rustc_driver::Callbacks for FuzzCallbacks {
     fn after_analysis<'tcx>(&mut self,
                             _compiler: &rustc_interface::interface::Compiler,
                             _queries: &'tcx rustc_interface::Queries<'tcx>,) -> rustc_driver::Compilation {
+        // Stop before codegen.
         rustc_driver::Compilation::Stop
     }
 }
 
+/// FileLoader that holds the contents of a single input file in memory.
+/// The idea here is to avoid needing to write to disk.
 struct FuzzFileLoader {
+    // The contents of the single input file.
     input: String,
 }
 
@@ -23,6 +28,7 @@ impl FuzzFileLoader {
     }
 }
 
+// The name of the single input file.
 const INPUT_PATH: &str = "fuzz_input.rs";
 
 impl rustc_span::source_map::FileLoader for FuzzFileLoader {
@@ -39,6 +45,8 @@ impl rustc_span::source_map::FileLoader for FuzzFileLoader {
     }
 }
 
+/// CodegenBackend that panics when being called to do any actual codegen.
+/// We use this to avoid needing to compile rustc_codegen_llvm.
 pub struct NullCodegenBackend;
 
 impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
