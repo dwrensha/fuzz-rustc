@@ -69,9 +69,6 @@ export CFG_RELEASE_CHANNEL=nightly
 export CFG_RELEASE=unknown
 export REAL_LIBRARY_PATH_VAR=foobar
 
-# Prevent librustc_llvm's 'cargo:rerun-if-changed' from always requiring a rebuild.
-export LLVM_CONFIG=`which llvm-config`
-
 # Any writable location will do for this one.
 export RUSTC_ERROR_METADATA_DST=/tmp/rustc_error_metadata
 
@@ -81,3 +78,4 @@ export RUSTC_INSTALL_BINDIR=/tmp/rustc_install_bindir
 # the above-specified RUSTFLAGS.
 cargo run --release --verbose --target $TARGET --bin "fuzz_target" -- -artifact_prefix=artifacts/ ${@:1} `pwd`/corpus `pwd`/seeds
 
+#cargo run --release --verbose --target $TARGET --bin "fuzz_target" -- -minimize_crash=1 ${@:1}

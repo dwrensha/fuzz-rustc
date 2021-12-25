@@ -39,6 +39,39 @@ impl rustc_span::source_map::FileLoader for FuzzFileLoader {
     }
 }
 
+pub struct NullCodegenBackend;
+
+impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
+    fn codegen_crate<'tcx>(&self,
+                           _: rustc_middle::ty::TyCtxt<'tcx>,
+                           _: rustc_metadata::EncodedMetadata,
+                           _: bool) -> std::boxed::Box<(dyn core::any::Any + 'static)> {
+        unimplemented!()
+    }
+
+    fn join_codegen(
+        &self,
+        _ongoing_codegen: Box<dyn core::any::Any>,
+        _sess: &rustc_session::Session,
+        _outputs: &rustc_session::config::OutputFilenames,
+    ) -> Result<(rustc_codegen_ssa::CodegenResults,
+                 rustc_data_structures::stable_map::FxHashMap<rustc_middle::dep_graph::WorkProductId,
+                                                              rustc_middle::dep_graph::WorkProduct>),
+                rustc_errors::ErrorReported> {
+        unimplemented!()
+    }
+
+    fn link(
+        &self,
+        _sess: &rustc_session::Session,
+        _codegen_results: rustc_codegen_ssa::CodegenResults,
+        _outputs: &rustc_session::config::OutputFilenames,
+    ) -> Result<(), rustc_errors::ErrorReported> {
+        unimplemented!()
+    }
+}
+
+
 pub fn main_fuzz(input: String, output_filename: &str) {
     let file_loader = Box::new(FuzzFileLoader::new(input));
     let mut callbacks = FuzzCallbacks;
@@ -53,6 +86,8 @@ pub fn main_fuzz(input: String, output_filename: &str) {
               env!("FUZZ_RUSTC_LIBRARY_DIR").to_string()];
         let mut run_compiler = rustc_driver::RunCompiler::new(args, &mut callbacks);
         run_compiler.set_file_loader(Some(file_loader));
+        run_compiler.set_make_codegen_backend(
+            Some(Box::new(|_| {Box::new(NullCodegenBackend)})));
         run_compiler.run()
     }).and_then(|result| result);
 }
