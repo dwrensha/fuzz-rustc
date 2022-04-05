@@ -65,7 +65,7 @@ impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
     ) -> Result<(rustc_codegen_ssa::CodegenResults,
                  rustc_data_structures::stable_map::FxHashMap<rustc_middle::dep_graph::WorkProductId,
                                                               rustc_middle::dep_graph::WorkProduct>),
-                rustc_errors::ErrorReported> {
+                rustc_errors::ErrorGuaranteed> {
         unimplemented!()
     }
 
@@ -74,7 +74,7 @@ impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
         _sess: &rustc_session::Session,
         _codegen_results: rustc_codegen_ssa::CodegenResults,
         _outputs: &rustc_session::config::OutputFilenames,
-    ) -> Result<(), rustc_errors::ErrorReported> {
+    ) -> Result<(), rustc_errors::ErrorGuaranteed> {
         unimplemented!()
     }
 }
@@ -101,7 +101,7 @@ pub fn main_fuzz(input: String) {
 }
 
 fuzz_target!(|data: &[u8]| {
-    if data.contains(&0x0c) || data.contains(&0x0d) || data.contains(&0x0b) {
+    if data.contains(&0x0c) || data.contains(&0x0d) || data.contains(&0x0b) || data.contains (&b'&') {
         return;
     }
     if let Ok(t) = String::from_utf8(data.into()) {

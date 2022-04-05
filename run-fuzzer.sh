@@ -22,7 +22,7 @@ export RUSTFLAGS="$RUSTFLAGS -Z force-unstable-if-unmarked"
 export RUSTFLAGS="$RUSTFLAGS -C codegen-units=1"
 
 # - enable debug assertions
-export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
+#export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
 
 #export RUSTFLAGS="$RUSTFLAGS -Z sanitizer=address"
 
