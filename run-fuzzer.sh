@@ -22,7 +22,7 @@ export RUSTFLAGS="$RUSTFLAGS -Z force-unstable-if-unmarked"
 export RUSTFLAGS="$RUSTFLAGS -C codegen-units=1"
 
 # - enable debug assertions
-#export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
+export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
 
 #export RUSTFLAGS="$RUSTFLAGS -Z sanitizer=address"
 
@@ -78,4 +78,5 @@ export RUSTC_INSTALL_BINDIR=/tmp/rustc_install_bindir
 # the above-specified RUSTFLAGS.
 cargo run --release --verbose --target $TARGET --bin "fuzz_target" -- -artifact_prefix=artifacts/ ${@:1} `pwd`/corpus `pwd`/seeds
 
+# An invocation like this can minimize a crash:
 #cargo run --release --verbose --target $TARGET --bin "fuzz_target" -- -minimize_crash=1 ${@:1}
