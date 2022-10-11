@@ -76,6 +76,7 @@ For example, this invocation will run 4 jobs in parallel and will only try ascii
 [#92267](https://github.com/rust-lang/rust/issues/92267)
 [#102114](https://github.com/rust-lang/rust/issues/102114)
 [#102751](https://github.com/rust-lang/rust/issues/102751)
+[#102878](https://github.com/rust-lang/rust/issues/102878)
 
 ## TODO
 
