@@ -18,9 +18,6 @@ export RUSTFLAGS="$RUSTFLAGS -C llvm-args=-sanitizer-coverage-pc-table"
 # - enable compilation of rustc_private crates
 export RUSTFLAGS="$RUSTFLAGS -Z force-unstable-if-unmarked"
 
-# - work around https://github.com/rust-fuzz/cargo-fuzz/issues/161
-export RUSTFLAGS="$RUSTFLAGS -C codegen-units=1"
-
 # - enable debug assertions
 export RUSTFLAGS="$RUSTFLAGS -C debug-assertions=on"
 
