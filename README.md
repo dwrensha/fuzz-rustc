@@ -1,6 +1,6 @@
 # Fuzz Rustc
 
-This repo contains configuration for fuzz-testing the Rust compiler using [libfuzzer-sys](https://github.com/rust-fuzz/libfuzzer-sys),
+This repo contains configuration for fuzz-testing the Rust compiler using [libfuzzer-sys](https://github.com/rust-fuzz/libfuzzer),
 taking inspiration from [cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz) and [fuzz-targets](https://github.com/rust-fuzz/targets).
 
 Because [rustc](https://github.com/rust-lang/rust) is a bootstrapping compiler, its build process has several stages
