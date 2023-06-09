@@ -76,7 +76,7 @@ impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
         _sess: &rustc_session::Session,
         _outputs: &rustc_session::config::OutputFilenames,
     ) -> Result<(rustc_codegen_ssa::CodegenResults,
-                 rustc_data_structures::fx::FxHashMap<rustc_middle::dep_graph::WorkProductId,
+                 rustc_data_structures::fx::FxIndexMap<rustc_middle::dep_graph::WorkProductId,
                                                       rustc_middle::dep_graph::WorkProduct>),
                 rustc_errors::ErrorGuaranteed> {
         unimplemented!()
