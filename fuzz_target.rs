@@ -1,3 +1,5 @@
+#![feature(new_uninit)]
+#![feature(read_buf)]
 #![no_main]
 #[macro_use] extern crate libfuzzer_sys;
 
@@ -6,6 +8,7 @@ pub struct FuzzCallbacks;
 
 impl rustc_driver::Callbacks for FuzzCallbacks {
     fn after_analysis<'tcx>(&mut self,
+                            _early: &rustc_session::EarlyErrorHandler,
                             _compiler: &rustc_interface::interface::Compiler,
                             _queries: &'tcx rustc_interface::Queries<'tcx>,) -> rustc_driver::Compilation {
         // Stop before codegen.
@@ -38,7 +41,7 @@ impl rustc_span::source_map::FileLoader for FuzzFileLoader {
 
     fn read_file(&self, path: &std::path::Path) -> std::io::Result<String> {
         if self.file_exists(path) {
-            let s = match String::from_utf8(self.input.clone()) {
+            let s = match String::from_utf8(self.input.to_vec()) {
                 Ok(s) => s,
                 Err(_e) => return Err(std::io::Error::new(std::io::ErrorKind::Other,
                                                           "not utf8")),
@@ -49,9 +52,16 @@ impl rustc_span::source_map::FileLoader for FuzzFileLoader {
         }
     }
 
-    fn read_binary_file(&self, path: &std::path::Path) -> std::io::Result<Vec<u8>> {
+    fn read_binary_file(&self, path: &std::path::Path) -> std::io::Result<rustc_data_structures::sync::Lrc<[u8]>> {
+        use rustc_data_structures::sync::Lrc;
+        use std::io::Read;
         if self.file_exists(path) {
-            Ok(self.input.clone())
+            let len = self.input.len();
+            let mut bytes = Lrc::new_uninit_slice(len as usize);
+            let mut buf = std::io::BorrowedBuf::from(Lrc::get_mut(&mut bytes).unwrap());
+            let mut file = std::io::Cursor::new(&self.input[..]);
+            file.read_buf_exact(buf.unfilled())?;
+            Ok(unsafe { bytes.assume_init() })
         } else {
             Err(std::io::Error::new(std::io::ErrorKind::NotFound, "tried to open nonexistent file".to_string()))
         }
@@ -121,10 +131,10 @@ fuzz_target!(|data: &[u8]| {
     if data.contains(&0x0c) || data.contains(&0x0d) || data.contains(&0x0b) /*|| data.contains (&b'&')*/ {
         return;
     }
-    if let Ok(t) = std::str::from_utf8(data) {
-        if let Some(_) = t.find("derive") {
-            return;
-        }
+//    if let Ok(t) = std::str::from_utf8(data) {
+//        if let Some(_) = t.find("derive") {
+//            return;
+//        }
         main_fuzz(data.into());
-    }
+//    }
 });
