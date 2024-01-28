@@ -81,9 +81,13 @@ For example, this invocation will run 4 jobs in parallel and will only try ascii
 [#110014](https://github.com/rust-lang/rust/issues/110014)
 [#111148](https://github.com/rust-lang/rust/issues/111148)
 
-## TODO
+## Projects using fuzz-rustc
 
-Generalize this setup to also work other fuzzing engines, like AFL and Honggfuzz.
+These projects have found lots more bugs:
+
+* [jruderman/fuzz-rustc](https://github.com/jruderman/fuzz-rustc)
+* [matthiaskrgr/icemaker](https://github.com/matthiaskrgr/icemaker)
+
 
 ## License
 
