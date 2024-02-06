@@ -65,6 +65,7 @@ export CFG_COMPILER_HOST_TRIPLE=$TARGET
 export CFG_RELEASE_CHANNEL=nightly
 export CFG_RELEASE=0.0.0
 export REAL_LIBRARY_PATH_VAR=foobar
+export RUSTC_BOOTSTRAP=yes
 
 # Any writable location will do for this one.
 export RUSTC_ERROR_METADATA_DST=/tmp/rustc_error_metadata
