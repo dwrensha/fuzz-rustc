@@ -1,16 +1,31 @@
-#![feature(new_uninit)]
 #![feature(read_buf)]
 #![feature(core_io_borrowed_buf)]
 #![no_main]
 #[macro_use] extern crate libfuzzer_sys;
 
 /// rustc_driver::Callbacks object that stops before codegen.
-pub struct FuzzCallbacks;
+pub struct FuzzCallbacks {
+    input: Vec<u8>,
+}
+
+impl FuzzCallbacks {
+    pub fn new(input: Vec<u8>) -> FuzzCallbacks {
+        Self {
+            input
+        }
+    }
+}
 
 impl rustc_driver::Callbacks for FuzzCallbacks {
+    fn config(&mut self, config: &mut rustc_interface::interface::Config) {
+        config.file_loader = Some(Box::new(FuzzFileLoader::new(self.input.clone())));
+        config.make_codegen_backend =
+            Some(Box::new(|_| {Box::new(NullCodegenBackend)}));
+    }
+
     fn after_analysis<'tcx>(&mut self,
                             _compiler: &rustc_interface::interface::Compiler,
-                            _queries: &'tcx rustc_interface::Queries<'tcx>,) -> rustc_driver::Compilation {
+                            _tcx: rustc_middle::ty::TyCtxt<'_>) -> rustc_driver::Compilation {
         // Stop before codegen.
         rustc_driver::Compilation::Stop
     }
@@ -52,13 +67,12 @@ impl rustc_span::source_map::FileLoader for FuzzFileLoader {
         }
     }
 
-    fn read_binary_file(&self, path: &std::path::Path) -> std::io::Result<rustc_data_structures::sync::Lrc<[u8]>> {
-        use rustc_data_structures::sync::Lrc;
+    fn read_binary_file(&self, path: &std::path::Path) -> std::io::Result<std::sync::Arc<[u8]>> {
         use std::io::Read;
         if self.file_exists(path) {
             let len = self.input.len();
-            let mut bytes = Lrc::new_uninit_slice(len as usize);
-            let mut buf = std::io::BorrowedBuf::from(Lrc::get_mut(&mut bytes).unwrap());
+            let mut bytes = std::sync::Arc::new_uninit_slice(len as usize);
+            let mut buf = std::io::BorrowedBuf::from(std::sync::Arc::get_mut(&mut bytes).unwrap());
             let mut file = std::io::Cursor::new(&self.input[..]);
             file.read_buf_exact(buf.unfilled())?;
             Ok(unsafe { bytes.assume_init() })
@@ -97,7 +111,7 @@ impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
         _sess: &rustc_session::Session,
         _codegen_results: rustc_codegen_ssa::CodegenResults,
         _outputs: &rustc_session::config::OutputFilenames,
-    ) -> Result<(), rustc_errors::ErrorGuaranteed> {
+    ) {
         unimplemented!()
     }
 
@@ -108,22 +122,17 @@ impl rustc_codegen_ssa::traits::CodegenBackend for NullCodegenBackend {
 
 
 pub fn main_fuzz(input: Vec<u8>) {
-    let file_loader = Box::new(FuzzFileLoader::new(input));
-    let mut callbacks = FuzzCallbacks;
-    let _result = rustc_driver::catch_fatal_errors(|| {
-        let args = &["rustc".to_string(),
-              INPUT_PATH.to_string(),
-              "-o".to_string(),
-              "dummy_output_file".to_string(),
-              "--edition".to_string(),
-              "2018".to_string(),
-              "-L".to_string(),
-              env!("FUZZ_RUSTC_LIBRARY_DIR").to_string()];
-        let mut run_compiler = rustc_driver::RunCompiler::new(args, &mut callbacks);
-        run_compiler.set_file_loader(Some(file_loader));
-        run_compiler.set_make_codegen_backend(
-            Some(Box::new(|_| {Box::new(NullCodegenBackend)})));
-        run_compiler.run()
+    let mut callbacks = FuzzCallbacks::new(input);
+    let args = &["rustc".to_string(),
+                 INPUT_PATH.to_string(),
+                 "-o".to_string(),
+                 "dummy_output_file".to_string(),
+                 "--edition".to_string(),
+                 "2018".to_string(),
+                 "-L".to_string(),
+                 env!("FUZZ_RUSTC_LIBRARY_DIR").to_string()];
+    let _ = rustc_driver::catch_fatal_errors(|| {
+        rustc_driver::run_compiler(args, &mut callbacks);
     }).and_then(|result| Ok(result));
 }
 
